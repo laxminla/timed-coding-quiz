@@ -11,7 +11,7 @@ const answer2Btn = document.querySelector('#answer2');
 const answer3Btn = document.querySelector('#answer3');
 const answer4Btn = document.querySelector('#answer4');
 const tagName = prompt("Please enter an initial");
-const shuffledQuestions, currentQuestionIndex;
+let shuffledQuestion
 const questions = [
     {
         question: 'What is 5 + 5',
@@ -30,7 +30,7 @@ const questions = [
             { text: 'Sacramento', correct: true },
             { text: 'Davis', correct: false },
         ]
-    }
+    },
     {
         question: 'Which sea creature has three hearts?',
         answers: [
@@ -39,7 +39,7 @@ const questions = [
             { text: 'Dolphin', correct: false },
             { text: 'Shark', correct: false },
         ]
-    }
+    },
     {
         question: 'What is the first letter of alphabet?',
         answers: [
@@ -48,7 +48,7 @@ const questions = [
             { text: 'A', correct: true },
             { text: 'B', correct: false },
         ]
-    }
+    },
     {
         question: 'What is the Italian word for "pie"?',
         answers: [
@@ -121,7 +121,7 @@ function startGame() {
     startButton.classList.add('hide')
     shuffledQuestions = questions.sort(() => Math.random() - .5)
     currentQuestionIndex = 0;
-    questionContainerElement.classList.remove('hide')
+    questionContainer.classList.remove('hide')
 }
 function startTimer() {
     // Call setInterval() to execute an action/function
@@ -137,7 +137,7 @@ function startTimer() {
             timeLeft = timeleft++;
             // Else. time is up, prompt user to save initials  
             // saveInitials() // TODO: define this function
-            
+
 
         }
     }, 1000);
