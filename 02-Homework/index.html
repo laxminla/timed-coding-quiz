@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coding Quiz</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="welcome-container">
+            <h1>Welcome to the Timed Code Quiz</h1>
+            <p>
+                To begin, please press the Start Button below
+            </p>
+            <button id="start-btn" class="start-btn btn">Start</button>
+        </div>
+        <div id="question-container" class="hidden">
+            <div id="question">Question</div>
+            <div id="answerButtons" class="btn-grid">
+                <button id="answer1" class="btn">Answer 1</button>
+                <button id="answer2" class="btn">Answer 2</button>
+                <button id="answer3" class="btn">Answer 3</button>
+                <button id="answer4" class="btn">Answer 4</button>
+            </div>
+        </div>
+        <div class="highscores-container" class="hidden">
+            <h2>Current High Scores</h2>
+            <ul class="scores-list"></ul>
+        </div>
+    </div>
+    <script scr="script.js"></script>
+</body>
+
+</html>
