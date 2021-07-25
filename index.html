@@ -12,6 +12,17 @@
 
 <body>
     <div class="container">
+        <div class="score-container">
+            <div id="highscores">
+                <button id="viewHighScoresBtn" class="start-btn btn">View High Scores</button>
+            </div>
+            <div id="currentscore">
+                current score: <span id="score"></span>
+            </div>
+            <div id="timeleft">
+                time left: <span id="time"></span>
+            </div>
+        </div>
         <div class="welcome-container">
             <h1>Welcome to the Timed Code Quiz</h1>
             <p>
@@ -28,10 +39,11 @@
                 <button id="answer4" class="btn">Answer 4</button>
             </div>
         </div>
-        <div class="highscores-container" class="hidden">
+        <div id="highscores-container" class="hidden">
             <h2>Current High Scores</h2>
-            <ul class="scores-list"></ul>  
-           
+            <ul class="scores-list"></ul>
+
+            <button id="close-btn" class="start-btn btn">Close</button>
         </div>
     </div>
     <script src="script.js"></script>

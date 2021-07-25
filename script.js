@@ -1,14 +1,23 @@
 // Global Variables
 const startButton = document.querySelector('#start-btn');
+const viewHighScoresBtn = document.querySelector('#viewHighScoresBtn');
+const closeBtn = document.querySelector('#close-btn');
+const scoreContainer = document.querySelector('#score');
+const timeLeftContainer = document.querySelector('#time');
 const welcomeContainer = document.querySelector('.welcome-container');
 const questionContainer = document.querySelector('#question-container');
-const highScoresContainer = document.querySelector('.highscores-container');
+const highScoresContainer = document.querySelector('#highscores-container');
 const questionDiv = document.querySelector('#question');
 const answer1Btn = document.querySelector('#answer1');
 const answer2Btn = document.querySelector('#answer2');
 const answer3Btn = document.querySelector('#answer3');
 const answer4Btn = document.querySelector('#answer4');
-let shuffledQuestion
+let scores = [];
+let timeLeft = 60;
+let currentScore = 0;
+let currentQuestionIndex = 0;
+let intervalId;
+let shuffledQuestion;
 const questions = [
     {
         question: 'What is 5 + 5',
@@ -49,57 +58,122 @@ const questions = [
     {
         question: 'What is the Italian word for "pie"?',
         answers: [
-            { text: 'spagati', correct: false },
+            { text: 'spaghetti', correct: false },
             { text: 'bread', correct: false },
             { text: 'Mango', correct: false },
             { text: 'pizza', correct: true },
         ]
     }
 ];
-let timeLeft = 60;
-let currentScore = 0;
-let currentQuestionIndex = 0;
-let intervalId;
+
 // Event Listeners
 startButton.addEventListener('click', startGame);
+viewHighScoresBtn.addEventListener('click', viewHighScores);
+closeBtn.addEventListener('click', closeHighScores);
 answer1Btn.addEventListener('click', function (event) {
-    let isCorrect = event.target.querySelector('answers');
-    console.log(isCorrect)
+    let isCorrect = event.target.dataset.correct;
+    console.log(isCorrect);
     if (isCorrect === "true") {
-        currentScore = currentScore + 5
+        currentScore = currentScore + 5;
+        scoreContainer.innerText = currentScore;
     } else {
-        timeLeft = timeLeft - 5
+        timeLeft = timeLeft - 5;
+        timeLeftContainer.innerText = timeLeft;
     }
+    showNextQuestion();
 });
+
 answer2Btn.addEventListener('click', function (event) {
     let isCorrect = event.target.dataset.correct;
+    console.log(isCorrect);
     if (isCorrect === "true") {
-        currentScore = currentScore + 5
+        currentScore = currentScore + 5;
+        scoreContainer.innerText = currentScore;
     } else {
-        timeLeft = timeLeft - 5
+        timeLeft = timeLeft - 5;
+        timeLeftContainer.innerText = timeLeft;
     }
+    showNextQuestion();
 });
+
 answer3Btn.addEventListener('click', function (event) {
     let isCorrect = event.target.dataset.correct;
+    console.log(isCorrect);
     if (isCorrect === "true") {
-        currentScore = currentScore + 5
+        currentScore = currentScore + 5;
+        scoreContainer.innerText = currentScore;
     } else {
-        timeLeft = timeLeft - 5
+        timeLeft = timeLeft - 5;
+        timeLeftContainer.innerText = timeLeft;
     }
+    showNextQuestion();
 });
+
 answer4Btn.addEventListener('click', function (event) {
     let isCorrect = event.target.dataset.correct;
+    console.log(isCorrect);
     if (isCorrect === "true") {
-        currentScore = currentScore + 5
+        currentScore = currentScore + 5;
+        scoreContainer.innerText = currentScore;
     } else {
-        timeLeft = timeLeft - 5
+        timeLeft = timeLeft - 5;
+        timeLeftContainer.innerText = timeLeft;
     }
+    showNextQuestion();
 });
+
+function viewHighScores() {
+    let scoresList = document.querySelector('.scores-list');
+    let li;
+    welcomeContainer.classList.add('hidden');
+    questionContainer.classList.add('hidden');
+    scoresList.innerHTML = "";
+    for (var i = 0; i < scores.length; i++) {
+        li = document.createElement('li');
+        li.innerText = scores[i].initials + ' - ' + scores[i].score;
+        scoresList.append(li);
+    }
+    highScoresContainer.classList.remove('hidden');
+};
+
+function closeHighScores() {
+    highScoresContainer.classList.add('hidden');
+    if ((timeLeft > 0) || (currentQuestionIndex !== 0)) {
+        questionContainer.classList.remove('hidden');
+    } else {
+        welcomeContainer.classList.remove('hidden');
+    }
+}
+
+function promptForInitials() {
+    currentQuestionIndex = 0;
+    // hide quiz container
+    questionContainer.classList.add("hidden");
+    welcomeContainer.classList.remove("hidden");
+    let initials = prompt("Please enter your initials");
+    // create newscore object
+    let newScore = {
+        initials: initials,
+        score: currentScore
+    };
+
+    // add new score object to scores array
+    scores.push(newScore);
+
+    // save scores array to local storage
+    // scores = JSON.parse(localStorage.getItem('highScores'));
+    localStorage.setItem("highScore", JSON.stringify(scores));
+
+}
+
 function startGame() {
-    console.log('started')
+    console.log('started');
+    scores = JSON.parse(localStorage.getItem('highScores')) || [];
     timeLeft = 60;
     currentScore = 0;
     currentQuestionIndex = 0;
+    scoreContainer.innerText = currentScore;
+    timeLeftContainer.innerText = timeLeft;
     welcomeContainer.classList.add('hidden');
     questionContainer.classList.remove('hidden');
     startTimer();
@@ -115,36 +189,23 @@ function startTimer() {
             timeLeft--;
         }
         else {
-            timeLeft++;
+            clearInterval(intervalId);
+            // prompt the user for initial
+            promptForInitials();
 
         }
+        timeLeftContainer.innerText = timeLeft;
     }, 1000);
 
-    let newScore = {
-        initials: prompt('first name last name'),
-        score: currentScore
-    }
 }
 
 function showNextQuestion() {
     let currentQuestionObj;
-    if (currentQuestionIndex === questions.length) {
-        let scores = [
-            {
-                initials: 'LS',
-                score: 50
-            },
-            {
-                initials: 'DP',
-                score: 60
-            },
-            {
-                initials: 'MA',
-                score: 40
-            }
-        ]
-        scores = JSON.parse(localStorage.get('highScores'));
-        scores.push(newScore)
+    console.log(questions.length);
+    if (currentQuestionIndex === questions.length - 1) {
+        clearInterval(intervalId);
+        // prompt the user for initial
+        promptForInitials();
     } else {
         currentQuestionObj = questions[currentQuestionIndex];
         questionDiv.innerText = currentQuestionObj.question;
